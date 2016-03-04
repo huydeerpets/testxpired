@@ -207,7 +207,7 @@ after_initialize do
       topic = (topic_view && topic_view.topic) || object.topic
 
       if topic
-        return scope.can_accept_answer?(topic) && object.post_number > 1 && !accepted_answer
+        return scope.can_accept_answer?(topic) && object.post_number >=0 && !accepted_answer
       end
 
       false
