@@ -1,7 +1,7 @@
 pt_BR:
   js:
     solved:
-      allow_accepted_answers: "Permitir que o criador do tópico e a equipe marquem uma resposta como a solução"
+      allow_expired_mark: "Permitir que o criador do tópico e a equipe marquem uma resposta como a solução"
       accept_answer: "Esta resposta resolve o problema"
       has_accepted_answer: "Este tópico tem uma solução"
       unaccept_answer: "Esta resposta não resolve mais o problema"

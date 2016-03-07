@@ -1,7 +1,7 @@
 es:
   js:
     solved:
-      allow_accepted_answers: "Permitir al creador del tema marcar una respuesta como la solución"
+      allow_expired_mark: "Permitir al creador del tema marcar una respuesta como la solución"
       accept_answer: "Esta respuesta soluciona el problema"
       has_accepted_answer: "Este tema contiene una solución"
       unaccept_answer: "Esta respuesta ya no soluciona el problema"

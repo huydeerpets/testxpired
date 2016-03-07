@@ -1,7 +1,7 @@
 ru:
   js:
     solved:
-      allow_accepted_answers: "Разрешить ответы"
+      allow_expired_mark: "Разрешить ответы"
       accept_answer: "Пометить как ответ"
       has_accepted_answer: "В этой теме есть ответ"
       unaccept_answer: "Убрать ответ"

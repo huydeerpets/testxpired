@@ -8,14 +8,14 @@ export default {
 
     Category.reopen({
 
-      @property('custom_fields.enable_accepted_answers')
-      enable_accepted_answers: {
+      @property('custom_fields.enable_expired_mark')
+      enable_expired_mark: {
         get(enableField) {
           return enableField === "true";
         },
         set(value) {
           value = value ? "true" : "false";
-          this.set("custom_fields.enable_accepted_answers", value);
+          this.set("custom_fields.enable_expired_mark", value);
           return value;
         }
       }

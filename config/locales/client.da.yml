@@ -1,7 +1,7 @@
 da:
   js:
     solved:
-      allow_accepted_answers: "Tillad ejer af emne og stab at markere svar som en løsning"
+      allow_expired_mark: "Tillad ejer af emne og stab at markere svar som en løsning"
       accept_answer: "Dette svar løser problemr"
       has_accepted_answer: "Dette svar har en løsning"
       unaccept_answer: "Dette svar løser ikke længere problemet"

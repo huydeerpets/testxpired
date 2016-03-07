@@ -1,7 +1,7 @@
 pl_PL:
   js:
     solved:
-      allow_accepted_answers: "Pozwól użytkownikom na akceptowanie rozwiązań"
+      allow_expired_mark: "Pozwól użytkownikom na akceptowanie rozwiązań"
       accept_answer: "Akceptuj rozwiązanie"
       has_accepted_answer: "Ten temat ma zaakceptowane rozwiązanie"
       unaccept_answer: "Niezaakceptowana odpowiedź"

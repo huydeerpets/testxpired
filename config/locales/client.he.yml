@@ -1,7 +1,7 @@
 he:
   js:
     solved:
-      allow_accepted_answers: "אפשר למשתמשים לאשר תשובות"
+      allow_expired_mark: "אפשר למשתמשים לאשר תשובות"
       accept_answer: "קבל תשובה"
       has_accepted_answer: "נושא זה נפתר"
       unaccept_answer: "בטל קבלת תשובה"

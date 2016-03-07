@@ -1,7 +1,7 @@
 zh_CN:
   js:
     solved:
-      allow_accepted_answers: "允许楼主和职员选择解决方案"
+      allow_expired_mark: "允许楼主和职员选择解决方案"
       accept_answer: "这个回复解决了问题"
       has_accepted_answer: "这个主题已经有了解决方案"
       unaccept_answer: "这个回复没有解决问题"

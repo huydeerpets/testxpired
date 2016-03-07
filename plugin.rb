@@ -177,13 +177,13 @@ after_initialize do
         begin
           Set.new(
             CategoryCustomField
-              .where(name: "enable_accepted_answers", value: "true")
+              .where(name: "enable_expired_mark", value: "true")
               .pluck(:category_id)
           )
         end
     end
 
-    def allow_accepted_answers_on_category?(category_id)
+    def allow_expired_mark_on_category?(category_id)
       return true if SiteSetting.allow_solved_on_all_topics
 
       self.class.reset_accepted_answer_cache unless @@allowed_accepted_cache["allowed"]
@@ -191,7 +191,7 @@ after_initialize do
     end
 
     def can_accept_answer?(topic)
-      allow_accepted_answers_on_category?(topic.category_id) && (
+      allow_expired_mark_on_category?(topic.category_id) && (
         is_staff? || (
           authenticated? && !topic.closed? && topic.user_id == current_user.id
         )
