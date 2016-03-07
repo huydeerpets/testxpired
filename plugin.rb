@@ -1,5 +1,5 @@
 # name: discourse-expired
-# about: Add a expired button to answers on Discourse
+# about: Add a expired button to expdeals on Discourse
 # version: 0.1
 # authors: Sam Saffron
 
@@ -9,15 +9,15 @@ register_asset 'stylesheets/exps.scss'
 
 after_initialize do
 
-  module ::DiscourseSolved
+  module ::DiscourseExpired
     class Engine < ::Rails::Engine
       engine_name PLUGIN_NAME
-      isolate_namespace DiscourseSolved
+      isolate_namespace DiscourseExpired
     end
   end
 
   require_dependency "application_controller"
-  class DiscourseSolved::AnswerController < ::ApplicationController
+  class DiscourseExpired::expdealController < ::ApplicationController
     def set_expired
 
       limit_set_expireds
@@ -90,13 +90,13 @@ after_initialize do
     end
   end
 
-  DiscourseSolved::Engine.routes.draw do
-    post "/set_expired" => "answer#set_expired"
-    post "/reopen" => "answer#reopen"
+  DiscourseExpired::Engine.routes.draw do
+    post "/set_expired" => "expdeal#set_expired"
+    post "/reopen" => "expdeal#reopen"
   end
 
   Discourse::Application.routes.append do
-    mount ::DiscourseSolved::Engine, at: "exp"
+    mount ::DiscourseExpired::Engine, at: "exp"
   end
 
   TopicView.add_post_custom_fields_whitelister do |user|

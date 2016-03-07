@@ -60,7 +60,7 @@ function set_expiredPost(post) {
 // Code for older discourse installs for backwards compatibility
 function oldPluginCode() {
   PostView.reopen({
-    classNameBindings: ['post.expired_deal:set_expired-answer']
+    classNameBindings: ['post.expired_deal:set_expired-expdeal']
   });
 
   PostMenuComponent.registerButton(function(visibleButtons){
@@ -77,12 +77,12 @@ function oldPluginCode() {
       position = visibleButtons.length - 2;
     }
     if (canAccept) {
-      visibleButtons.splice(position,0,new Button('set_expiredAnswer', 'expired.set_expire', 'check-square-o', {className: 'reopened'}));
+      visibleButtons.splice(position,0,new Button('set_expiredexpdeal', 'expired.set_expire', 'check-square-o', {className: 'reopened'}));
     }
     if (canUnset_expired || set_expired) {
       var locale = canUnset_expired ? 'expired.unset_expire' : 'expired.expired_deal';
       visibleButtons.splice(position,0,new Button(
-          'reopenAnswer',
+          'reopenexpdeal',
           locale,
           'check-square',
           {className: 'set_expired fade-out', prefixHTML: '<span class="set_expired-text">' + I18n.t('expired.exp') + '</span>'})
@@ -96,11 +96,11 @@ function oldPluginCode() {
       this.rerender();
     }.observes('post.expired_deal'),
 
-    clickUnset_expiredAnswer() {
+    clickUnset_expiredexpdeal() {
       reopenPost(this.get('post'));
     },
 
-    clickAcceptAnswer() {
+    clickAcceptexpdeal() {
       set_expiredPost(this.get('post'));
     }
   });
@@ -120,7 +120,7 @@ function initializeWithApi(api) {
 
     if (canAccept) {
       return {
-        action: 'set_expiredAnswer',
+        action: 'set_expiredexpdeal',
         icon: 'check-square-o',
         className: 'reopened',
         title: 'expired.set_expire',
@@ -129,7 +129,7 @@ function initializeWithApi(api) {
     } else if (canUnset_expired || set_expired) {
       const title = canUnset_expired ? 'expired.unset_expire' : 'expired.expired_deal';
       return {
-        action: 'reopenAnswer',
+        action: 'reopenexpdeal',
         icon: 'check-square',
         title,
         className: 'set_expired fade-out',
@@ -145,12 +145,12 @@ function initializeWithApi(api) {
     if (dec.attrs.post_number === 1) {
       const topic = dec.getModel().get('topic');
       if (topic.get('expired_deal')) {
-        return dec.rawHtml(`<p class="expired">${topic.get('set_expiredAnswerHtml')}</p>`);
+        return dec.rawHtml(`<p class="expired">${topic.get('set_expiredexpdealHtml')}</p>`);
       }
     }
   });
 
-  api.attachWidgetAction('post', 'set_expiredAnswer', function() {
+  api.attachWidgetAction('post', 'set_expiredexpdeal', function() {
     const post = this.model;
     const current = post.get('topic.postStream.posts').filter(p => {
       return p.get('post_number') === 1 || p.get('expired_deal');
@@ -160,7 +160,7 @@ function initializeWithApi(api) {
     current.forEach(p => this.appEvents.trigger('post-stream:refresh', { id: p.id }));
   });
 
-  api.attachWidgetAction('post', 'reopenAnswer', function() {
+  api.attachWidgetAction('post', 'reopenexpdeal', function() {
     const post = this.model;
     const op = post.get('topic.postStream.posts').find(p => p.get('post_number') === 1);
     reopenPost(post);
@@ -174,7 +174,7 @@ export default {
 
     Topic.reopen({
       // keeping this here cause there is complex localization
-      set_expiredAnswerHtml: function() {
+      set_expiredexpdealHtml: function() {
         const username = this.get('expired_deal.username');
         const postNumber = this.get('expired_deal.post_number');
 
