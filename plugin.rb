@@ -104,13 +104,13 @@ after_initialize do
   end
 
   if Report.respond_to?(:add_report)
-    AdminDashboardData::GLOBAL_REPORTS << "accepted_solutions"
+    AdminDashboardData::GLOBAL_REPORTS << "exp_deals"
 
-    Report.add_report("accepted_solutions") do |report|
+    Report.add_report("exp_deals") do |report|
       report.data = []
-      accepted_solutions = TopicCustomField.where(name: "expired_deal_post_id")
-      accepted_solutions = accepted_solutions.joins(:topic).where("topics.category_id = ?", report.category_id) if report.category_id
-      accepted_solutions.where("topic_custom_fields.created_at >= ?", report.start_date)
+      exp_deals = TopicCustomField.where(name: "expired_deal_post_id")
+      exp_deals = exp_deals.joins(:topic).where("topics.category_id = ?", report.category_id) if report.category_id
+      exp_deals.where("topic_custom_fields.created_at >= ?", report.start_date)
                         .where("topic_custom_fields.created_at <= ?", report.end_date)
                         .group("DATE(topic_custom_fields.created_at)")
                         .order("DATE(topic_custom_fields.created_at)")
@@ -118,8 +118,8 @@ after_initialize do
                         .each do |date, count|
         report.data << { x: date, y: count }
       end
-      report.total = accepted_solutions.count
-      report.prev30Days = accepted_solutions.where("topic_custom_fields.created_at >= ?", report.start_date - 30.days)
+      report.total = exp_deals.count
+      report.prev30Days = exp_deals.where("topic_custom_fields.created_at >= ?", report.start_date - 30.days)
                                             .where("topic_custom_fields.created_at <= ?", report.start_date)
                                             .count
     end

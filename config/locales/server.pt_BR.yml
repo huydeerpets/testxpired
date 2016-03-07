@@ -2,7 +2,7 @@ pt_BR:
   site_settings:
     allow_expired_on_all_topics: "Permitir usuários selecionarem soluções em todos tópicos (por padrão você controla isso editando categorias)"
   reports:
-    accepted_solutions:
+    exp_deals:
       title: "Soluções aceitas"
       xaxis: "Dia"
       yaxis: "Total"
