@@ -29,7 +29,7 @@ function reopenPost(post) {
   });
   topic.set('expired_deal', undefined);
 
-  Discourse.ajax("/solution/reopen", {
+  Discourse.ajax("/exp/reopen", {
     type: 'POST',
     data: { id: post.get('id') }
   }).catch(popupAjaxError);
@@ -51,7 +51,7 @@ function set_expiredPost(post) {
     post_number: post.get('post_number')
   });
 
-  Discourse.ajax("/solution/set_expired", {
+  Discourse.ajax("/exp/set_expired", {
     type: 'POST',
     data: { id: post.get('.id') }
   }).catch(popupAjaxError);
@@ -85,7 +85,7 @@ function oldPluginCode() {
           'reopenAnswer',
           locale,
           'check-square',
-          {className: 'set_expired fade-out', prefixHTML: '<span class="set_expired-text">' + I18n.t('expired.solution') + '</span>'})
+          {className: 'set_expired fade-out', prefixHTML: '<span class="set_expired-text">' + I18n.t('expired.exp') + '</span>'})
         );
     }
 
@@ -135,7 +135,7 @@ function initializeWithApi(api) {
         className: 'set_expired fade-out',
         position,
         beforeButton(h) {
-          return h('span.set_expired-text', I18n.t('expired.solution'));
+          return h('span.set_expired-text', I18n.t('expired.exp'));
         }
       };
     }

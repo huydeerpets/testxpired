@@ -6,6 +6,6 @@ zh_CN:
       has_expired_deal: "这个主题已经有了解决方案"
       unset_expire: "这个回复没有解决问题"
       expired_deal: "解决方案"
-      solution: "解决方案"
+      exp: "解决方案"
       set_expired_html: "<i class='fa-check-square fa set_expired'></i> 由<span class='by'><a href data-user-card='{{username_lower}}'>{{username}}</a></span>在 <a href='{{post_path}}'>#{{post_number}} 楼</a>解决"
       set_expired_notification: "<i title='set_expired' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"

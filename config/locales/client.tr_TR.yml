@@ -6,6 +6,6 @@ tr_TR:
       has_expired_deal: "Bu gönderi çözüm olarak kabul edildi."
       unset_expire: "Çözüm olmaktan çıkar"
       expired_deal: "Kabul edilen çözümler"
-      solution: "Çözüm"
+      exp: "Çözüm"
       set_expired_html: "<i class='fa-check-square fa set_expired'></i> Bu konu <a href data-user-card='{{username_lower}}'>{{username}}</a> tarafından <a href='{{post_path}}'>şu gönderide #{{post_number}}</a> çözülmüştür."
       set_expired_notification: "<i title='set_expired' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"

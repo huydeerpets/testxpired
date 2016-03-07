@@ -5,7 +5,7 @@
 
 PLUGIN_NAME = "discourse_expired".freeze
 
-register_asset 'stylesheets/solutions.scss'
+register_asset 'stylesheets/exps.scss'
 
 after_initialize do
 
@@ -96,7 +96,7 @@ after_initialize do
   end
 
   Discourse::Application.routes.append do
-    mount ::DiscourseSolved::Engine, at: "solution"
+    mount ::DiscourseSolved::Engine, at: "exp"
   end
 
   TopicView.add_post_custom_fields_whitelister do |user|

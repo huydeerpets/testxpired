@@ -6,6 +6,6 @@ pt_BR:
       has_expired_deal: "Este tópico tem uma solução"
       unset_expire: "Esta resposta não resolve mais o problema"
       expired_deal: "Solução"
-      solution: "Solução"
+      exp: "Solução"
       set_expired_html: "<i class='fa-check-square fa set_expired'></i> Resolvido <span class='by'>por <a href data-user-card='{{username_lower}}'>{{username}}</a></span> na <a href='{{post_path}}'>mensagem #{{post_number}}</a>"
       set_expired_notification: "<i title='set_expired' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
