@@ -207,7 +207,7 @@ after_initialize do
       topic = (topic_view && topic_view.topic) || object.topic
 
       if topic
-        return scope.can_set_expire?(topic) && object.post_number > 1 && !expired_deal
+        return scope.can_set_expire?(topic) && object.post_number >=0 && !expired_deal
       end
 
       false
