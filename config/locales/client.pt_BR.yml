@@ -7,5 +7,5 @@ pt_BR:
       unset_expire: "Esta resposta não resolve mais o problema"
       expired_deal: "Solução"
       solution: "Solução"
-      accepted_html: "<i class='fa-check-square fa accepted'></i> Resolvido <span class='by'>por <a href data-user-card='{{username_lower}}'>{{username}}</a></span> na <a href='{{post_path}}'>mensagem #{{post_number}}</a>"
-      accepted_notification: "<i title='accepted' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
+      set_expireded_html: "<i class='fa-check-square fa set_expireded'></i> Resolvido <span class='by'>por <a href data-user-card='{{username_lower}}'>{{username}}</a></span> na <a href='{{post_path}}'>mensagem #{{post_number}}</a>"
+      set_expireded_notification: "<i title='set_expireded' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"

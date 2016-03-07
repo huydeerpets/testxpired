@@ -7,5 +7,5 @@ en:
       unset_expire: "Re-open this deal"
       expired_deal: "Expired"
       solution: "Expired"
-      accepted_html: "<i class='fa-check-square fa accepted'></i>"
-      accepted_notification: "<i title='accepted' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
+      set_expireded_html: "<i class='fa-check-square fa set_expireded'></i>"
+      set_expireded_notification: "<i title='set_expireded' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
