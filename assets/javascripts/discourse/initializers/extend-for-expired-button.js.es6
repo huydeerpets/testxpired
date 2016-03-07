@@ -11,7 +11,7 @@ function clearAccepted(topic) {
   const posts = topic.get('postStream.posts');
   posts.forEach(post => {
     if (post.get('post_number') > 1 ) {
-      post.set('accepted_answer',false);
+      post.set('expired_deal',false);
       post.set('can_set_expire',true);
       post.set('can_unset_expire',false);
     }
@@ -25,9 +25,9 @@ function unacceptPost(post) {
   post.setProperties({
     can_set_expire: true,
     can_unset_expire: false,
-    accepted_answer: false
+    expired_deal: false
   });
-  topic.set('accepted_answer', undefined);
+  topic.set('expired_deal', undefined);
 
   Discourse.ajax("/solution/unaccept", {
     type: 'POST',
@@ -43,10 +43,10 @@ function acceptPost(post) {
   post.setProperties({
     can_unset_expire: true,
     can_set_expire: false,
-    accepted_answer: true
+    expired_deal: true
   });
 
-  topic.set('accepted_answer', {
+  topic.set('expired_deal', {
     username: post.get('username'),
     post_number: post.get('post_number')
   });
@@ -60,7 +60,7 @@ function acceptPost(post) {
 // Code for older discourse installs for backwards compatibility
 function oldPluginCode() {
   PostView.reopen({
-    classNameBindings: ['post.accepted_answer:accepted-answer']
+    classNameBindings: ['post.expired_deal:accepted-answer']
   });
 
   PostMenuComponent.registerButton(function(visibleButtons){
@@ -68,7 +68,7 @@ function oldPluginCode() {
 
     var canAccept = this.get('post.can_set_expire');
     var canUnaccept = this.get('post.can_unset_expire');
-    var accepted = this.get('post.accepted_answer');
+    var accepted = this.get('post.expired_deal');
     var isOp = Discourse.User.currentProp("id") === this.get('post.topic.user_id');
 
     if  (!accepted && canAccept && !isOp) {
@@ -80,7 +80,7 @@ function oldPluginCode() {
       visibleButtons.splice(position,0,new Button('acceptAnswer', 'expired.set_expire', 'check-square-o', {className: 'unaccepted'}));
     }
     if (canUnaccept || accepted) {
-      var locale = canUnaccept ? 'expired.unset_expire' : 'expired.accepted_answer';
+      var locale = canUnaccept ? 'expired.unset_expire' : 'expired.expired_deal';
       visibleButtons.splice(position,0,new Button(
           'unacceptAnswer',
           locale,
@@ -94,7 +94,7 @@ function oldPluginCode() {
   PostMenuComponent.reopen({
     acceptedChanged: function() {
       this.rerender();
-    }.observes('post.accepted_answer'),
+    }.observes('post.expired_deal'),
 
     clickUnacceptAnswer() {
       unacceptPost(this.get('post'));
@@ -109,12 +109,12 @@ function oldPluginCode() {
 function initializeWithApi(api) {
   const currentUser = api.getCurrentUser();
 
-  api.includePostAttributes('can_set_expire', 'can_unset_expire', 'accepted_answer');
+  api.includePostAttributes('can_set_expire', 'can_unset_expire', 'expired_deal');
 
   api.addPostMenuButton('expired', attrs => {
     const canAccept = attrs.can_set_expire;
     const canUnaccept = attrs.can_unset_expire;
-    const accepted = attrs.accepted_answer;
+    const accepted = attrs.expired_deal;
     const isOp = currentUser && currentUser.id === attrs.user_id;
     const position = (!accepted && canAccept && !isOp) ? 'second-last-hidden' : 'first';
 
@@ -127,7 +127,7 @@ function initializeWithApi(api) {
         position
       };
     } else if (canUnaccept || accepted) {
-      const title = canUnaccept ? 'expired.unset_expire' : 'expired.accepted_answer';
+      const title = canUnaccept ? 'expired.unset_expire' : 'expired.expired_deal';
       return {
         action: 'unacceptAnswer',
         icon: 'check-square',
@@ -144,7 +144,7 @@ function initializeWithApi(api) {
   api.decorateWidget('post-contents:after-cooked', dec => {
     if (dec.attrs.post_number === 1) {
       const topic = dec.getModel().get('topic');
-      if (topic.get('accepted_answer')) {
+      if (topic.get('expired_deal')) {
         return dec.rawHtml(`<p class="expired">${topic.get('acceptedAnswerHtml')}</p>`);
       }
     }
@@ -153,7 +153,7 @@ function initializeWithApi(api) {
   api.attachWidgetAction('post', 'acceptAnswer', function() {
     const post = this.model;
     const current = post.get('topic.postStream.posts').filter(p => {
-      return p.get('post_number') === 1 || p.get('accepted_answer');
+      return p.get('post_number') === 1 || p.get('expired_deal');
     });
     acceptPost(post);
 
@@ -175,8 +175,8 @@ export default {
     Topic.reopen({
       // keeping this here cause there is complex localization
       acceptedAnswerHtml: function() {
-        const username = this.get('accepted_answer.username');
-        const postNumber = this.get('accepted_answer.post_number');
+        const username = this.get('expired_deal.username');
+        const postNumber = this.get('expired_deal.post_number');
 
         if (!username || !postNumber) {
           return "";
@@ -189,17 +189,17 @@ export default {
           post_number: postNumber,
           user_path: User.create({username: username}).get('path')
         });
-      }.property('accepted_answer', 'id')
+      }.property('expired_deal', 'id')
     });
 
     TopicStatus.reopen({
       statuses: function(){
         const results = this._super();
-        if (this.topic.has_accepted_answer) {
+        if (this.topic.has_expired_deal) {
           results.push({
             openTag: 'span',
             closeTag: 'span',
-            title: I18n.t('expired.has_accepted_answer'),
+            title: I18n.t('expired.has_expired_deal'),
             icon: 'check-square-o'
           });
         }

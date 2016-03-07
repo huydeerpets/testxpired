@@ -26,16 +26,16 @@ after_initialize do
 
       guardian.ensure_can_set_expire!(post.topic)
 
-      accepted_id = post.topic.custom_fields["accepted_answer_post_id"].to_i
+      accepted_id = post.topic.custom_fields["expired_deal_post_id"].to_i
       if accepted_id > 0
         if p2 = Post.find_by(id: accepted_id)
-          p2.custom_fields["is_accepted_answer"] = nil
+          p2.custom_fields["is_expired_deal"] = nil
           p2.save!
         end
       end
 
-      post.custom_fields["is_accepted_answer"] = "true"
-      post.topic.custom_fields["accepted_answer_post_id"] = post.id
+      post.custom_fields["is_expired_deal"] = "true"
+      post.topic.custom_fields["expired_deal_post_id"] = post.id
       post.topic.save!
       post.save!
 
@@ -64,8 +64,8 @@ after_initialize do
 
       guardian.ensure_can_set_expire!(post.topic)
 
-      post.custom_fields["is_accepted_answer"] = nil
-      post.topic.custom_fields["accepted_answer_post_id"] = nil
+      post.custom_fields["is_expired_deal"] = nil
+      post.topic.custom_fields["expired_deal_post_id"] = nil
       post.topic.save!
       post.save!
 
@@ -100,7 +100,7 @@ after_initialize do
   end
 
   TopicView.add_post_custom_fields_whitelister do |user|
-    ["is_accepted_answer"]
+    ["is_expired_deal"]
   end
 
   if Report.respond_to?(:add_report)
@@ -108,7 +108,7 @@ after_initialize do
 
     Report.add_report("accepted_solutions") do |report|
       report.data = []
-      accepted_solutions = TopicCustomField.where(name: "accepted_answer_post_id")
+      accepted_solutions = TopicCustomField.where(name: "expired_deal_post_id")
       accepted_solutions = accepted_solutions.joins(:topic).where("topics.category_id = ?", report.category_id) if report.category_id
       accepted_solutions.where("topic_custom_fields.created_at >= ?", report.start_date)
                         .where("topic_custom_fields.created_at <= ?", report.end_date)
@@ -127,14 +127,14 @@ after_initialize do
 
   require_dependency 'topic_view_serializer'
   class ::TopicViewSerializer
-    attributes :accepted_answer
+    attributes :expired_deal
 
-    def include_accepted_answer?
-      accepted_answer_post_id
+    def include_expired_deal?
+      expired_deal_post_id
     end
 
-    def accepted_answer
-      if info = accepted_answer_post_info
+    def expired_deal
+      if info = expired_deal_post_info
         {
           post_number: info[0],
           username: info[1],
@@ -142,17 +142,17 @@ after_initialize do
       end
     end
 
-    def accepted_answer_post_info
+    def expired_deal_post_info
       # TODO: we may already have it in the stream ... so bypass query here
 
-      Post.where(id: accepted_answer_post_id, topic_id: object.topic.id)
+      Post.where(id: expired_deal_post_id, topic_id: object.topic.id)
           .joins(:user)
           .pluck('post_number, username')
           .first
     end
 
-    def accepted_answer_post_id
-      id = object.topic.custom_fields["accepted_answer_post_id"]
+    def expired_deal_post_id
+      id = object.topic.custom_fields["expired_deal_post_id"]
       # a bit messy but race conditions can give us an array here, avoid
       id && id.to_i rescue nil
     end
@@ -164,7 +164,7 @@ after_initialize do
 
     protected
     def reset_accepted_cache
-      ::Guardian.reset_accepted_answer_cache
+      ::Guardian.reset_expired_deal_cache
     end
   end
 
@@ -172,7 +172,7 @@ after_initialize do
 
     @@allowed_accepted_cache = DistributedCache.new("allowed_accepted")
 
-    def self.reset_accepted_answer_cache
+    def self.reset_expired_deal_cache
       @@allowed_accepted_cache["allowed"] =
         begin
           Set.new(
@@ -186,7 +186,7 @@ after_initialize do
     def allow_expired_mark_on_category?(category_id)
       return true if SiteSetting.allow_expired_on_all_topics
 
-      self.class.reset_accepted_answer_cache unless @@allowed_accepted_cache["allowed"]
+      self.class.reset_expired_deal_cache unless @@allowed_accepted_cache["allowed"]
       @@allowed_accepted_cache["allowed"].include?(category_id)
     end
 
@@ -201,13 +201,13 @@ after_initialize do
 
   require_dependency 'post_serializer'
   class ::PostSerializer
-    attributes :can_set_expire, :can_unset_expire, :accepted_answer
+    attributes :can_set_expire, :can_unset_expire, :expired_deal
 
     def can_set_expire
       topic = (topic_view && topic_view.topic) || object.topic
 
       if topic
-        return scope.can_set_expire?(topic) && object.post_number > 1 && !accepted_answer
+        return scope.can_set_expire?(topic) && object.post_number > 1 && !expired_deal
       end
 
       false
@@ -216,12 +216,12 @@ after_initialize do
     def can_unset_expire
       topic = (topic_view && topic_view.topic) || object.topic
       if topic
-        return scope.can_set_expire?(topic) && (post_custom_fields["is_accepted_answer"] == 'true')
+        return scope.can_set_expire?(topic) && (post_custom_fields["is_expired_deal"] == 'true')
       end
     end
 
-    def accepted_answer
-      post_custom_fields["is_accepted_answer"] == 'true'
+    def expired_deal
+      post_custom_fields["is_expired_deal"] == 'true'
     end
   end
 
@@ -233,7 +233,7 @@ after_initialize do
       posts.where("topics.id IN (
         SELECT tc.topic_id
         FROM topic_custom_fields tc
-        WHERE tc.name = 'accepted_answer_post_id' AND
+        WHERE tc.name = 'expired_deal_post_id' AND
                         tc.value IS NOT NULL
         )")
 
@@ -243,7 +243,7 @@ after_initialize do
       posts.where("topics.id NOT IN (
         SELECT tc.topic_id
         FROM topic_custom_fields tc
-        WHERE tc.name = 'accepted_answer_post_id' AND
+        WHERE tc.name = 'expired_deal_post_id' AND
                         tc.value IS NOT NULL
         )")
 
@@ -253,17 +253,17 @@ after_initialize do
   require_dependency 'topic_list_item_serializer'
 
   class ::TopicListItemSerializer
-    attributes :has_accepted_answer
+    attributes :has_expired_deal
 
-    def include_has_accepted_answer?
-      object.custom_fields["accepted_answer_post_id"]
+    def include_has_expired_deal?
+      object.custom_fields["expired_deal_post_id"]
     end
 
-    def has_accepted_answer
+    def has_expired_deal
       true
     end
   end
 
-  TopicList.preloaded_custom_fields << "accepted_answer_post_id" if TopicList.respond_to? :preloaded_custom_fields
+  TopicList.preloaded_custom_fields << "expired_deal_post_id" if TopicList.respond_to? :preloaded_custom_fields
 
 end

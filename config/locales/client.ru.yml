@@ -3,9 +3,9 @@ ru:
     expired:
       allow_expired_mark: "Разрешить ответы"
       set_expire: "Пометить как ответ"
-      has_accepted_answer: "В этой теме есть ответ"
+      has_expired_deal: "В этой теме есть ответ"
       unset_expire: "Убрать ответ"
-      accepted_answer: "Подтвержденный ответ"
+      expired_deal: "Подтвержденный ответ"
       solution: "Ответ"
       accepted_html: "<i class='fa-check-square fa accepted'></i><a href data-user-card='{{username_lower}}'>{{username}}</a> ответил в <a href='{{post_path}}'>посте #{{post_number}}</a>"
       accepted_notification: "<i title='accepted' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"

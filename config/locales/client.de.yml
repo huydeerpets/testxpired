@@ -3,9 +3,9 @@ de:
     expired:
       allow_expired_mark: "Erlaube dem Ersteller des Themas und Mitarbeitern eine Antwort als Lösung zu markieren"
       set_expire: "Diese Antwort löst das Problem"
-      has_accepted_answer: "Dieses Thema hat eine Lösung"
+      has_expired_deal: "Dieses Thema hat eine Lösung"
       unset_expire: "Diese Antwort löst das Problem doch nicht"
-      accepted_answer: "Lösung"
+      expired_deal: "Lösung"
       solution: "Lösung"
       accepted_html: "<i class='fa-check-square fa accepted'></i> Gelöst <span class='by'>durch <a href data-user-card='{{username_lower}}'>{{username}}</a></span> in <a href='{{post_path}}'>Beitrag #{{post_number}}</a>"
       accepted_notification: "<i title='Lösung akzeptiert' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
