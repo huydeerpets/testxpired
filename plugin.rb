@@ -1,5 +1,5 @@
 # name: discourse-expired
-# about: Add a expired button to expdeals on Discourse
+# about: Add a expired button to answers on Discourse
 # version: 0.1
 # authors: Sam Saffron
 
@@ -17,7 +17,7 @@ after_initialize do
   end
 
   require_dependency "application_controller"
-  class DiscourseExpired::expdealController < ::ApplicationController
+  class DiscourseExpired::answerController < ::ApplicationController
     def set_expired
 
       limit_set_expireds
@@ -91,8 +91,8 @@ after_initialize do
   end
 
   DiscourseExpired::Engine.routes.draw do
-    post "/set_expired" => "expdeal#set_expired"
-    post "/reopen" => "expdeal#reopen"
+    post "/set_expired" => "answer#set_expired"
+    post "/reopen" => "answer#reopen"
   end
 
   Discourse::Application.routes.append do
