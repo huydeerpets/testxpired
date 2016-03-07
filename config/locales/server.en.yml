@@ -1,8 +1,8 @@
 en:
   site_settings:
-    allow_expired_on_all_topics: "Allow users to select expired_deals on all topics (by default you control this by editing categories)"
+    allow_solved_on_all_topics: "Allow users to select solutions on all topics (by default you control this by editing categories)"
   reports:
-    expired_marked_deals:
-      title: "Accepted expired_deals"
+    accepted_solutions:
+      title: "Accepted solutions"
       xaxis: "Day"
       yaxis: "Total"

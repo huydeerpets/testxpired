@@ -1,8 +1,8 @@
-.expired-panel, .post-controls .expired_marked, .fa.expired_marked, .expired_marked-text {
+.solved-panel, .post-controls .accepted, .fa.accepted, .accepted-text {
   color: green;
 }
 
-.post-controls .expired_marked-text {
+.post-controls .accepted-text {
   display: inline-block;
   font-size: inherit;
   vertical-align: middle;
@@ -11,20 +11,20 @@
   z-index: 999;
 }
 
-// you can style expired_marked answers however your want
-.topic-post.expired_marked-answer .topic-body {
+// you can style accepted answers however your want
+.topic-post.accepted-answer .topic-body {
 //  background-color: #E9FFE0;
 }
 
-.mobile-view .post-controls .expired_marked-text {
+.mobile-view .post-controls .accepted-text {
   float: left;
 }
 
-.mobile-view .expired-panel {
+.mobile-view .solved-panel {
   margin-bottom: 15px;
 }
 
-.expired-panel {
+.solved-panel {
 
   .by {
     display: none;

@@ -1,10 +1,10 @@
 he:
   js:
-    expired:
-      allow_expired_deals: "אפשר למשתמשים לאשר תשובות"
-      mark_deal_expired: "קבל תשובה"
-      has_expired_deal: "נושא זה נפתר"
-      unmark_deal_expired: "בטל קבלת תשובה"
-      expired_deal: "קבל תשובה"
-      expired_marked_html: "<i class='fa-check-square fa expired_marked'></i> נפתר על ידי <a href data-user-card='{{username_lower}}'>{{username}}</a><a href='{{post_path}}'>בתגובה  #{{post_number}}</a>"
-      expired_marked_notification: "<i title='expired_marked' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
+    solved:
+      allow_accepted_answers: "אפשר למשתמשים לאשר תשובות"
+      accept_answer: "קבל תשובה"
+      has_accepted_answer: "נושא זה נפתר"
+      unaccept_answer: "בטל קבלת תשובה"
+      accepted_answer: "קבל תשובה"
+      accepted_html: "<i class='fa-check-square fa accepted'></i> נפתר על ידי <a href data-user-card='{{username_lower}}'>{{username}}</a><a href='{{post_path}}'>בתגובה  #{{post_number}}</a>"
+      accepted_notification: "<i title='accepted' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"

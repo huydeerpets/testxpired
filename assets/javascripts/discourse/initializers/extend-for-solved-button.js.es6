@@ -11,47 +11,47 @@ function clearAccepted(topic) {
   const posts = topic.get('postStream.posts');
   posts.forEach(post => {
     if (post.get('post_number') > 1 ) {
-      post.set('expired_deal',false);
-      post.set('can_mark_deal_expired',true);
-      post.set('can_unmark_deal_expired',false);
+      post.set('accepted_answer',false);
+      post.set('can_accept_answer',true);
+      post.set('can_unaccept_answer',false);
     }
   });
 }
 
-function unexpired_markPost(post) {
-  if (!post.get('can_unmark_deal_expired')) { return; }
+function unacceptPost(post) {
+  if (!post.get('can_unaccept_answer')) { return; }
   const topic = post.topic;
 
   post.setProperties({
-    can_mark_deal_expired: true,
-    can_unmark_deal_expired: false,
-    expired_deal: false
+    can_accept_answer: true,
+    can_unaccept_answer: false,
+    accepted_answer: false
   });
-  topic.set('expired_deal', undefined);
+  topic.set('accepted_answer', undefined);
 
-  Discourse.ajax("/expired_deal/unexpired_mark", {
+  Discourse.ajax("/solution/unaccept", {
     type: 'POST',
     data: { id: post.get('id') }
   }).catch(popupAjaxError);
 }
 
-function expired_markPost(post) {
+function acceptPost(post) {
   const topic = post.topic;
 
   clearAccepted(topic);
 
   post.setProperties({
-    can_unmark_deal_expired: true,
-    can_mark_deal_expired: false,
-    expired_deal: true
+    can_unaccept_answer: true,
+    can_accept_answer: false,
+    accepted_answer: true
   });
 
-  topic.set('expired_deal', {
+  topic.set('accepted_answer', {
     username: post.get('username'),
     post_number: post.get('post_number')
   });
 
-  Discourse.ajax("/expired_deal/expired_mark", {
+  Discourse.ajax("/solution/accept", {
     type: 'POST',
     data: { id: post.get('.id') }
   }).catch(popupAjaxError);
@@ -60,48 +60,48 @@ function expired_markPost(post) {
 // Code for older discourse installs for backwards compatibility
 function oldPluginCode() {
   PostView.reopen({
-    classNameBindings: ['post.expired_deal:expired_marked-answer']
+    classNameBindings: ['post.accepted_answer:accepted-answer']
   });
 
   PostMenuComponent.registerButton(function(visibleButtons){
     var position = 0;
 
-    var canAccept = this.get('post.can_mark_deal_expired');
-    var canUnexpired_mark = this.get('post.can_unmark_deal_expired');
-    var expired_marked = this.get('post.expired_deal');
+    var canAccept = this.get('post.can_accept_answer');
+    var canUnaccept = this.get('post.can_unaccept_answer');
+    var accepted = this.get('post.accepted_answer');
     var isOp = Discourse.User.currentProp("id") === this.get('post.topic.user_id');
 
-    if  (!expired_marked && canAccept && !isOp) {
+    if  (!accepted && canAccept && !isOp) {
       // first hidden position
       if (this.get('collapsed')) { return; }
       position = visibleButtons.length - 2;
     }
     if (canAccept) {
-      visibleButtons.splice(position,0,new Button('expired_markAnswer', 'expired.mark_deal_expired', 'check-square-o', {className: 'unexpired_marked'}));
+      visibleButtons.splice(position,0,new Button('acceptAnswer', 'solved.accept_answer', 'check-square-o', {className: 'unaccepted'}));
     }
-    if (canUnexpired_mark || expired_marked) {
-      var locale = canUnexpired_mark ? 'expired.unmark_deal_expired' : 'expired.expired_deal';
+    if (canUnaccept || accepted) {
+      var locale = canUnaccept ? 'solved.unaccept_answer' : 'solved.accepted_answer';
       visibleButtons.splice(position,0,new Button(
-          'unexpired_markAnswer',
+          'unacceptAnswer',
           locale,
           'check-square',
-          {className: 'expired_marked fade-out', prefixHTML: '<span class="expired_marked-text">' + I18n.t('expired.expired_deal') + '</span>'})
+          {className: 'accepted fade-out', prefixHTML: '<span class="accepted-text">' + I18n.t('solved.solution') + '</span>'})
         );
     }
 
   });
 
   PostMenuComponent.reopen({
-    expired_markedChanged: function() {
+    acceptedChanged: function() {
       this.rerender();
-    }.observes('post.expired_deal'),
+    }.observes('post.accepted_answer'),
 
-    clickUnexpired_markAnswer() {
-      unexpired_markPost(this.get('post'));
+    clickUnacceptAnswer() {
+      unacceptPost(this.get('post'));
     },
 
     clickAcceptAnswer() {
-      expired_markPost(this.get('post'));
+      acceptPost(this.get('post'));
     }
   });
 }
@@ -109,33 +109,33 @@ function oldPluginCode() {
 function initializeWithApi(api) {
   const currentUser = api.getCurrentUser();
 
-  api.includePostAttributes('can_mark_deal_expired', 'can_unmark_deal_expired', 'expired_deal');
+  api.includePostAttributes('can_accept_answer', 'can_unaccept_answer', 'accepted_answer');
 
-  api.addPostMenuButton('expired', attrs => {
-    const canAccept = attrs.can_mark_deal_expired;
-    const canUnexpired_mark = attrs.can_unmark_deal_expired;
-    const expired_marked = attrs.expired_deal;
+  api.addPostMenuButton('solved', attrs => {
+    const canAccept = attrs.can_accept_answer;
+    const canUnaccept = attrs.can_unaccept_answer;
+    const accepted = attrs.accepted_answer;
     const isOp = currentUser && currentUser.id === attrs.user_id;
-    const position = (!expired_marked && canAccept && !isOp) ? 'second-last-hidden' : 'first';
+    const position = (!accepted && canAccept && !isOp) ? 'second-last-hidden' : 'first';
 
     if (canAccept) {
       return {
-        action: 'expired_markAnswer',
+        action: 'acceptAnswer',
         icon: 'check-square-o',
-        className: 'unexpired_marked',
-        title: 'expired.mark_deal_expired',
+        className: 'unaccepted',
+        title: 'solved.accept_answer',
         position
       };
-    } else if (canUnexpired_mark || expired_marked) {
-      const title = canUnexpired_mark ? 'expired.unmark_deal_expired' : 'expired.expired_deal';
+    } else if (canUnaccept || accepted) {
+      const title = canUnaccept ? 'solved.unaccept_answer' : 'solved.accepted_answer';
       return {
-        action: 'unexpired_markAnswer',
+        action: 'unacceptAnswer',
         icon: 'check-square',
         title,
-        className: 'expired_marked fade-out',
+        className: 'accepted fade-out',
         position,
         beforeButton(h) {
-          return h('span.expired_marked-text', I18n.t('expired.expired_deal'));
+          return h('span.accepted-text', I18n.t('solved.solution'));
         }
       };
     }
@@ -144,62 +144,62 @@ function initializeWithApi(api) {
   api.decorateWidget('post-contents:after-cooked', dec => {
     if (dec.attrs.post_number === 1) {
       const topic = dec.getModel().get('topic');
-      if (topic.get('expired_deal')) {
-        return dec.rawHtml(`<p class="expired">${topic.get('expired_markedAnswerHtml')}</p>`);
+      if (topic.get('accepted_answer')) {
+        return dec.rawHtml(`<p class="solved">${topic.get('acceptedAnswerHtml')}</p>`);
       }
     }
   });
 
-  api.attachWidgetAction('post', 'expired_markAnswer', function() {
+  api.attachWidgetAction('post', 'acceptAnswer', function() {
     const post = this.model;
     const current = post.get('topic.postStream.posts').filter(p => {
-      return p.get('post_number') === 1 || p.get('expired_deal');
+      return p.get('post_number') === 1 || p.get('accepted_answer');
     });
-    expired_markPost(post);
+    acceptPost(post);
 
     current.forEach(p => this.appEvents.trigger('post-stream:refresh', { id: p.id }));
   });
 
-  api.attachWidgetAction('post', 'unexpired_markAnswer', function() {
+  api.attachWidgetAction('post', 'unacceptAnswer', function() {
     const post = this.model;
     const op = post.get('topic.postStream.posts').find(p => p.get('post_number') === 1);
-    unexpired_markPost(post);
+    unacceptPost(post);
     this.appEvents.trigger('post-stream:refresh', { id: op.get('id') });
   });
 }
 
 export default {
-  name: 'extend-for-expired-button',
+  name: 'extend-for-solved-button',
   initialize() {
 
     Topic.reopen({
       // keeping this here cause there is complex localization
-      expired_markedAnswerHtml: function() {
-        const username = this.get('expired_deal.username');
-        const postNumber = this.get('expired_deal.post_number');
+      acceptedAnswerHtml: function() {
+        const username = this.get('accepted_answer.username');
+        const postNumber = this.get('accepted_answer.post_number');
 
         if (!username || !postNumber) {
           return "";
         }
 
-        return I18n.t("expired.expired_marked_html", {
+        return I18n.t("solved.accepted_html", {
           username_lower: username.toLowerCase(),
           username,
           post_path: this.get('url') + "/" + postNumber,
           post_number: postNumber,
           user_path: User.create({username: username}).get('path')
         });
-      }.property('expired_deal', 'id')
+      }.property('accepted_answer', 'id')
     });
 
     TopicStatus.reopen({
       statuses: function(){
         const results = this._super();
-        if (this.topic.has_expired_deal) {
+        if (this.topic.has_accepted_answer) {
           results.push({
             openTag: 'span',
             closeTag: 'span',
-            title: I18n.t('expired.has_expired_deal'),
+            title: I18n.t('solved.has_accepted_answer'),
             icon: 'check-square-o'
           });
         }
