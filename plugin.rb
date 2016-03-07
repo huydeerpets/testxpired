@@ -9,15 +9,19 @@ register_asset 'stylesheets/exps.scss'
 
 after_initialize do
 
-  module ::DiscourseExpired
+  module ::DiscourseSolved
     class Engine < ::Rails::Engine
       engine_name PLUGIN_NAME
-      isolate_namespace DiscourseExpired
+      isolate_namespace DiscourseSolved
     end
   end
 
   require_dependency "application_controller"
+<<<<<<< HEAD
   class DiscourseExpired::answerController < ::ApplicationController
+=======
+  class DiscourseSolved::AnswerController < ::ApplicationController
+>>>>>>> parent of 38b3099... update
     def set_expired
 
       limit_set_expireds
@@ -90,13 +94,17 @@ after_initialize do
     end
   end
 
+<<<<<<< HEAD
   DiscourseExpired::Engine.routes.draw do
+=======
+  DiscourseSolved::Engine.routes.draw do
+>>>>>>> parent of 38b3099... update
     post "/set_expired" => "answer#set_expired"
     post "/reopen" => "answer#reopen"
   end
 
   Discourse::Application.routes.append do
-    mount ::DiscourseExpired::Engine, at: "exp"
+    mount ::DiscourseSolved::Engine, at: "exp"
   end
 
   TopicView.add_post_custom_fields_whitelister do |user|

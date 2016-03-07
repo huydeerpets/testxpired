@@ -1,8 +1,8 @@
 en:
   site_settings:
-    allow_expired_on_all_topics: "Allow users to mark a deal is expired"
+    allow_expired_on_all_topics: "Allow users to select exps on all topics (by default you control this by editing categories)"
   reports:
     exp_deals:
-      title: "Expired"
+      title: "Accepted exps"
       xaxis: "Day"
       yaxis: "Total"

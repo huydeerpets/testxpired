@@ -77,12 +77,20 @@ function oldPluginCode() {
       position = visibleButtons.length - 2;
     }
     if (canAccept) {
+<<<<<<< HEAD
       visibleButtons.splice(position,0,new Button('set_expiredanswer', 'expired.set_expire', 'check-square-o', {className: 'reopened'}));
+=======
+      visibleButtons.splice(position,0,new Button('set_expiredAnswer', 'expired.set_expire', 'check-square-o', {className: 'reopened'}));
+>>>>>>> parent of 38b3099... update
     }
     if (canUnset_expired || set_expired) {
       var locale = canUnset_expired ? 'expired.unset_expire' : 'expired.expired_deal';
       visibleButtons.splice(position,0,new Button(
+<<<<<<< HEAD
           'reopenanswer',
+=======
+          'reopenAnswer',
+>>>>>>> parent of 38b3099... update
           locale,
           'check-square',
           {className: 'set_expired fade-out', prefixHTML: '<span class="set_expired-text">' + I18n.t('expired.exp') + '</span>'})
@@ -96,11 +104,19 @@ function oldPluginCode() {
       this.rerender();
     }.observes('post.expired_deal'),
 
+<<<<<<< HEAD
     clickUnset_expiredanswer() {
       reopenPost(this.get('post'));
     },
 
     clickAcceptanswer() {
+=======
+    clickUnset_expiredAnswer() {
+      reopenPost(this.get('post'));
+    },
+
+    clickAcceptAnswer() {
+>>>>>>> parent of 38b3099... update
       set_expiredPost(this.get('post'));
     }
   });
@@ -120,7 +136,11 @@ function initializeWithApi(api) {
 
     if (canAccept) {
       return {
+<<<<<<< HEAD
         action: 'set_expiredanswer',
+=======
+        action: 'set_expiredAnswer',
+>>>>>>> parent of 38b3099... update
         icon: 'check-square-o',
         className: 'reopened',
         title: 'expired.set_expire',
@@ -129,7 +149,11 @@ function initializeWithApi(api) {
     } else if (canUnset_expired || set_expired) {
       const title = canUnset_expired ? 'expired.unset_expire' : 'expired.expired_deal';
       return {
+<<<<<<< HEAD
         action: 'reopenanswer',
+=======
+        action: 'reopenAnswer',
+>>>>>>> parent of 38b3099... update
         icon: 'check-square',
         title,
         className: 'set_expired fade-out',
@@ -145,12 +169,20 @@ function initializeWithApi(api) {
     if (dec.attrs.post_number === 1) {
       const topic = dec.getModel().get('topic');
       if (topic.get('expired_deal')) {
+<<<<<<< HEAD
         return dec.rawHtml(`<p class="expired">${topic.get('set_expiredanswerHtml')}</p>`);
+=======
+        return dec.rawHtml(`<p class="expired">${topic.get('set_expiredAnswerHtml')}</p>`);
+>>>>>>> parent of 38b3099... update
       }
     }
   });
 
+<<<<<<< HEAD
   api.attachWidgetAction('post', 'set_expiredanswer', function() {
+=======
+  api.attachWidgetAction('post', 'set_expiredAnswer', function() {
+>>>>>>> parent of 38b3099... update
     const post = this.model;
     const current = post.get('topic.postStream.posts').filter(p => {
       return p.get('post_number') === 1 || p.get('expired_deal');
@@ -160,7 +192,11 @@ function initializeWithApi(api) {
     current.forEach(p => this.appEvents.trigger('post-stream:refresh', { id: p.id }));
   });
 
+<<<<<<< HEAD
   api.attachWidgetAction('post', 'reopenanswer', function() {
+=======
+  api.attachWidgetAction('post', 'reopenAnswer', function() {
+>>>>>>> parent of 38b3099... update
     const post = this.model;
     const op = post.get('topic.postStream.posts').find(p => p.get('post_number') === 1);
     reopenPost(post);
@@ -174,7 +210,11 @@ export default {
 
     Topic.reopen({
       // keeping this here cause there is complex localization
+<<<<<<< HEAD
       set_expiredanswerHtml: function() {
+=======
+      set_expiredAnswerHtml: function() {
+>>>>>>> parent of 38b3099... update
         const username = this.get('expired_deal.username');
         const postNumber = this.get('expired_deal.post_number');
 
