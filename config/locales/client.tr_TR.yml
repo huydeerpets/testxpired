@@ -1,6 +1,6 @@
 tr_TR:
   js:
-    solved:
+    expired:
       allow_expired_mark: "Kullanıcılar gönderileri çözüm olarak seçebilsinler mi?"
       set_expire: "Çözüm olarak kabul et"
       has_accepted_answer: "Bu gönderi çözüm olarak kabul edildi."

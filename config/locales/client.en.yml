@@ -1,6 +1,6 @@
 en:
   js:
-    solved:
+    expired:
       allow_expired_mark: "Allow topic owner and staff to mark a reply as the solution"
       set_expire: "This reply solves the problem"
       has_accepted_answer: "This topic has a solution"

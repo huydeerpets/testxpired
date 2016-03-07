@@ -1,9 +1,9 @@
-# name: discourse-solved
-# about: Add a solved button to answers on Discourse
+# name: discourse-expired
+# about: Add a expired button to answers on Discourse
 # version: 0.1
 # authors: Sam Saffron
 
-PLUGIN_NAME = "discourse_solved".freeze
+PLUGIN_NAME = "discourse_expired".freeze
 
 register_asset 'stylesheets/solutions.scss'
 
@@ -46,7 +46,7 @@ after_initialize do
                            topic_id: post.topic_id,
                            post_number: post.post_number,
                            data: {
-                             message: 'solved.accepted_notification',
+                             message: 'expired.accepted_notification',
                              display_username: current_user.username,
                              topic_title: post.topic.title
                            }.to_json
@@ -184,7 +184,7 @@ after_initialize do
     end
 
     def allow_expired_mark_on_category?(category_id)
-      return true if SiteSetting.allow_solved_on_all_topics
+      return true if SiteSetting.allow_expired_on_all_topics
 
       self.class.reset_accepted_answer_cache unless @@allowed_accepted_cache["allowed"]
       @@allowed_accepted_cache["allowed"].include?(category_id)
@@ -229,7 +229,7 @@ after_initialize do
 
   #TODO Remove when plugin is 1.0
   if Search.respond_to? :advanced_filter
-    Search.advanced_filter(/in:solved/) do |posts|
+    Search.advanced_filter(/in:expired/) do |posts|
       posts.where("topics.id IN (
         SELECT tc.topic_id
         FROM topic_custom_fields tc
@@ -239,7 +239,7 @@ after_initialize do
 
     end
 
-    Search.advanced_filter(/in:unsolved/) do |posts|
+    Search.advanced_filter(/in:unexpired/) do |posts|
       posts.where("topics.id NOT IN (
         SELECT tc.topic_id
         FROM topic_custom_fields tc

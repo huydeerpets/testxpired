@@ -1,6 +1,6 @@
 zh_CN:
   js:
-    solved:
+    expired:
       allow_expired_mark: "允许楼主和职员选择解决方案"
       set_expire: "这个回复解决了问题"
       has_accepted_answer: "这个主题已经有了解决方案"

@@ -1,6 +1,6 @@
 pt_BR:
   js:
-    solved:
+    expired:
       allow_expired_mark: "Permitir que o criador do tópico e a equipe marquem uma resposta como a solução"
       set_expire: "Esta resposta resolve o problema"
       has_accepted_answer: "Este tópico tem uma solução"

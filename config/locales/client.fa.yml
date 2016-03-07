@@ -1,6 +1,6 @@
 fa:
   js:
-    solved:
+    expired:
       allow_expired_mark: "به صاحب عنوان و مدیران اجازه انتخاب یک پاسخ را به عنوان راه حل بده."
       set_expire: "این پاسخ راه حل مشکل است."
       has_accepted_answer: "این عنوان راه حلی دارد"

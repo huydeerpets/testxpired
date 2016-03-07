@@ -77,15 +77,15 @@ function oldPluginCode() {
       position = visibleButtons.length - 2;
     }
     if (canAccept) {
-      visibleButtons.splice(position,0,new Button('acceptAnswer', 'solved.set_expire', 'check-square-o', {className: 'unaccepted'}));
+      visibleButtons.splice(position,0,new Button('acceptAnswer', 'expired.set_expire', 'check-square-o', {className: 'unaccepted'}));
     }
     if (canUnaccept || accepted) {
-      var locale = canUnaccept ? 'solved.unset_expire' : 'solved.accepted_answer';
+      var locale = canUnaccept ? 'expired.unset_expire' : 'expired.accepted_answer';
       visibleButtons.splice(position,0,new Button(
           'unacceptAnswer',
           locale,
           'check-square',
-          {className: 'accepted fade-out', prefixHTML: '<span class="accepted-text">' + I18n.t('solved.solution') + '</span>'})
+          {className: 'accepted fade-out', prefixHTML: '<span class="accepted-text">' + I18n.t('expired.solution') + '</span>'})
         );
     }
 
@@ -111,7 +111,7 @@ function initializeWithApi(api) {
 
   api.includePostAttributes('can_set_expire', 'can_unset_expire', 'accepted_answer');
 
-  api.addPostMenuButton('solved', attrs => {
+  api.addPostMenuButton('expired', attrs => {
     const canAccept = attrs.can_set_expire;
     const canUnaccept = attrs.can_unset_expire;
     const accepted = attrs.accepted_answer;
@@ -123,11 +123,11 @@ function initializeWithApi(api) {
         action: 'acceptAnswer',
         icon: 'check-square-o',
         className: 'unaccepted',
-        title: 'solved.set_expire',
+        title: 'expired.set_expire',
         position
       };
     } else if (canUnaccept || accepted) {
-      const title = canUnaccept ? 'solved.unset_expire' : 'solved.accepted_answer';
+      const title = canUnaccept ? 'expired.unset_expire' : 'expired.accepted_answer';
       return {
         action: 'unacceptAnswer',
         icon: 'check-square',
@@ -135,7 +135,7 @@ function initializeWithApi(api) {
         className: 'accepted fade-out',
         position,
         beforeButton(h) {
-          return h('span.accepted-text', I18n.t('solved.solution'));
+          return h('span.accepted-text', I18n.t('expired.solution'));
         }
       };
     }
@@ -145,7 +145,7 @@ function initializeWithApi(api) {
     if (dec.attrs.post_number === 1) {
       const topic = dec.getModel().get('topic');
       if (topic.get('accepted_answer')) {
-        return dec.rawHtml(`<p class="solved">${topic.get('acceptedAnswerHtml')}</p>`);
+        return dec.rawHtml(`<p class="expired">${topic.get('acceptedAnswerHtml')}</p>`);
       }
     }
   });
@@ -169,7 +169,7 @@ function initializeWithApi(api) {
 }
 
 export default {
-  name: 'extend-for-solved-button',
+  name: 'extend-for-expired-button',
   initialize() {
 
     Topic.reopen({
@@ -182,7 +182,7 @@ export default {
           return "";
         }
 
-        return I18n.t("solved.accepted_html", {
+        return I18n.t("expired.accepted_html", {
           username_lower: username.toLowerCase(),
           username,
           post_path: this.get('url') + "/" + postNumber,
@@ -199,7 +199,7 @@ export default {
           results.push({
             openTag: 'span',
             closeTag: 'span',
-            title: I18n.t('solved.has_accepted_answer'),
+            title: I18n.t('expired.has_accepted_answer'),
             icon: 'check-square-o'
           });
         }

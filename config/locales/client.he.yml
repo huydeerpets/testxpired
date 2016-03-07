@@ -1,6 +1,6 @@
 he:
   js:
-    solved:
+    expired:
       allow_expired_mark: "אפשר למשתמשים לאשר תשובות"
       set_expire: "קבל תשובה"
       has_accepted_answer: "נושא זה נפתר"

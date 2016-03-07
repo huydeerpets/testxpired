@@ -1,6 +1,6 @@
 pl_PL:
   js:
-    solved:
+    expired:
       allow_expired_mark: "Pozwól użytkownikom na akceptowanie rozwiązań"
       set_expire: "Akceptuj rozwiązanie"
       has_accepted_answer: "Ten temat ma zaakceptowane rozwiązanie"

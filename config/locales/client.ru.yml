@@ -1,6 +1,6 @@
 ru:
   js:
-    solved:
+    expired:
       allow_expired_mark: "Разрешить ответы"
       set_expire: "Пометить как ответ"
       has_accepted_answer: "В этой теме есть ответ"
