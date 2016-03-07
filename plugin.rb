@@ -26,9 +26,9 @@ after_initialize do
 
       guardian.ensure_can_set_expire!(post.topic)
 
-      set_expireded_id = post.topic.custom_fields["expired_deal_post_id"].to_i
-      if set_expireded_id > 0
-        if p2 = Post.find_by(id: set_expireded_id)
+      set_expired_id = post.topic.custom_fields["expired_deal_post_id"].to_i
+      if set_expired_id > 0
+        if p2 = Post.find_by(id: set_expired_id)
           p2.custom_fields["is_expired_deal"] = nil
           p2.save!
         end
@@ -46,7 +46,7 @@ after_initialize do
                            topic_id: post.topic_id,
                            post_number: post.post_number,
                            data: {
-                             message: 'expired.set_expireded_notification',
+                             message: 'expired.set_expired_notification',
                              display_username: current_user.username,
                              topic_title: post.topic.title
                            }.to_json
@@ -160,20 +160,20 @@ after_initialize do
   end
 
   class ::Category
-    after_save :reset_set_expireded_cache
+    after_save :reset_set_expired_cache
 
     protected
-    def reset_set_expireded_cache
+    def reset_set_expired_cache
       ::Guardian.reset_expired_deal_cache
     end
   end
 
   class ::Guardian
 
-    @@allowed_set_expireded_cache = DistributedCache.new("allowed_set_expireded")
+    @@allowed_set_expired_cache = DistributedCache.new("allowed_set_expired")
 
     def self.reset_expired_deal_cache
-      @@allowed_set_expireded_cache["allowed"] =
+      @@allowed_set_expired_cache["allowed"] =
         begin
           Set.new(
             CategoryCustomField
@@ -186,8 +186,8 @@ after_initialize do
     def allow_expired_mark_on_category?(category_id)
       return true if SiteSetting.allow_expired_on_all_topics
 
-      self.class.reset_expired_deal_cache unless @@allowed_set_expireded_cache["allowed"]
-      @@allowed_set_expireded_cache["allowed"].include?(category_id)
+      self.class.reset_expired_deal_cache unless @@allowed_set_expired_cache["allowed"]
+      @@allowed_set_expired_cache["allowed"].include?(category_id)
     end
 
     def can_set_expire?(topic)

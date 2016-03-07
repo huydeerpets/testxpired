@@ -7,5 +7,5 @@ da:
       unset_expire: "Dette svar løser ikke længere problemet"
       expired_deal: "Løsning"
       solution: "Løsning"
-      set_expireded_html: "<i class='fa-check-square fa set_expireded'></i> Løst <span class='by'>af <a href data-user-card='{{username_lower}}'>{{username}}</a></span> i <a href='{{post_path}}'>indlæg #{{post_number}}</a>"
-      set_expireded_notification: "<i title='set_expireded' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
+      set_expired_html: "<i class='fa-check-square fa set_expired'></i> Løst <span class='by'>af <a href data-user-card='{{username_lower}}'>{{username}}</a></span> i <a href='{{post_path}}'>indlæg #{{post_number}}</a>"
+      set_expired_notification: "<i title='set_expired' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"

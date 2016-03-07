@@ -60,7 +60,7 @@ function set_expiredPost(post) {
 // Code for older discourse installs for backwards compatibility
 function oldPluginCode() {
   PostView.reopen({
-    classNameBindings: ['post.expired_deal:set_expireded-answer']
+    classNameBindings: ['post.expired_deal:set_expired-answer']
   });
 
   PostMenuComponent.registerButton(function(visibleButtons){
@@ -68,10 +68,10 @@ function oldPluginCode() {
 
     var canAccept = this.get('post.can_set_expire');
     var canUnset_expired = this.get('post.can_unset_expire');
-    var set_expireded = this.get('post.expired_deal');
+    var set_expired = this.get('post.expired_deal');
     var isOp = Discourse.User.currentProp("id") === this.get('post.topic.user_id');
 
-    if  (!set_expireded && canAccept && !isOp) {
+    if  (!set_expired && canAccept && !isOp) {
       // first hidden position
       if (this.get('collapsed')) { return; }
       position = visibleButtons.length - 2;
@@ -79,20 +79,20 @@ function oldPluginCode() {
     if (canAccept) {
       visibleButtons.splice(position,0,new Button('set_expiredAnswer', 'expired.set_expire', 'check-square-o', {className: 'reopened'}));
     }
-    if (canUnset_expired || set_expireded) {
+    if (canUnset_expired || set_expired) {
       var locale = canUnset_expired ? 'expired.unset_expire' : 'expired.expired_deal';
       visibleButtons.splice(position,0,new Button(
           'reopenAnswer',
           locale,
           'check-square',
-          {className: 'set_expireded fade-out', prefixHTML: '<span class="set_expireded-text">' + I18n.t('expired.solution') + '</span>'})
+          {className: 'set_expired fade-out', prefixHTML: '<span class="set_expired-text">' + I18n.t('expired.solution') + '</span>'})
         );
     }
 
   });
 
   PostMenuComponent.reopen({
-    set_expirededChanged: function() {
+    set_expiredChanged: function() {
       this.rerender();
     }.observes('post.expired_deal'),
 
@@ -114,9 +114,9 @@ function initializeWithApi(api) {
   api.addPostMenuButton('expired', attrs => {
     const canAccept = attrs.can_set_expire;
     const canUnset_expired = attrs.can_unset_expire;
-    const set_expireded = attrs.expired_deal;
+    const set_expired = attrs.expired_deal;
     const isOp = currentUser && currentUser.id === attrs.user_id;
-    const position = (!set_expireded && canAccept && !isOp) ? 'second-last-hidden' : 'first';
+    const position = (!set_expired && canAccept && !isOp) ? 'second-last-hidden' : 'first';
 
     if (canAccept) {
       return {
@@ -126,16 +126,16 @@ function initializeWithApi(api) {
         title: 'expired.set_expire',
         position
       };
-    } else if (canUnset_expired || set_expireded) {
+    } else if (canUnset_expired || set_expired) {
       const title = canUnset_expired ? 'expired.unset_expire' : 'expired.expired_deal';
       return {
         action: 'reopenAnswer',
         icon: 'check-square',
         title,
-        className: 'set_expireded fade-out',
+        className: 'set_expired fade-out',
         position,
         beforeButton(h) {
-          return h('span.set_expireded-text', I18n.t('expired.solution'));
+          return h('span.set_expired-text', I18n.t('expired.solution'));
         }
       };
     }
@@ -145,7 +145,7 @@ function initializeWithApi(api) {
     if (dec.attrs.post_number === 1) {
       const topic = dec.getModel().get('topic');
       if (topic.get('expired_deal')) {
-        return dec.rawHtml(`<p class="expired">${topic.get('set_expirededAnswerHtml')}</p>`);
+        return dec.rawHtml(`<p class="expired">${topic.get('set_expiredAnswerHtml')}</p>`);
       }
     }
   });
@@ -174,7 +174,7 @@ export default {
 
     Topic.reopen({
       // keeping this here cause there is complex localization
-      set_expirededAnswerHtml: function() {
+      set_expiredAnswerHtml: function() {
         const username = this.get('expired_deal.username');
         const postNumber = this.get('expired_deal.post_number');
 
@@ -182,7 +182,7 @@ export default {
           return "";
         }
 
-        return I18n.t("expired.set_expireded_html", {
+        return I18n.t("expired.set_expired_html", {
           username_lower: username.toLowerCase(),
           username,
           post_path: this.get('url') + "/" + postNumber,

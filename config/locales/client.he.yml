@@ -6,5 +6,5 @@ he:
       has_expired_deal: "נושא זה נפתר"
       unset_expire: "בטל קבלת תשובה"
       expired_deal: "קבל תשובה"
-      set_expireded_html: "<i class='fa-check-square fa set_expireded'></i> נפתר על ידי <a href data-user-card='{{username_lower}}'>{{username}}</a><a href='{{post_path}}'>בתגובה  #{{post_number}}</a>"
-      set_expireded_notification: "<i title='set_expireded' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
+      set_expired_html: "<i class='fa-check-square fa set_expired'></i> נפתר על ידי <a href data-user-card='{{username_lower}}'>{{username}}</a><a href='{{post_path}}'>בתגובה  #{{post_number}}</a>"
+      set_expired_notification: "<i title='set_expired' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
