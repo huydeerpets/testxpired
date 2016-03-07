@@ -1,9 +1,9 @@
-# name: discourse-expired
+# name: discourse-solved
 # about: Add a expired button to answers on Discourse
 # version: 0.1
 # authors: Sam Saffron
 
-PLUGIN_NAME = "discourse_expired".freeze
+PLUGIN_NAME = "discourse_solved".freeze
 
 register_asset 'stylesheets/expired_deals.scss'
 
