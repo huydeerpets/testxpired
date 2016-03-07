@@ -1,11 +1,11 @@
 pt_BR:
   js:
-    solved:
-      allow_accepted_answers: "Permitir que o criador do tópico e a equipe marquem uma resposta como a solução"
-      accept_answer: "Esta resposta resolve o problema"
-      has_accepted_answer: "Este tópico tem uma solução"
-      unaccept_answer: "Esta resposta não resolve mais o problema"
-      accepted_answer: "Solução"
-      solution: "Solução"
-      accepted_html: "<i class='fa-check-square fa accepted'></i> Resolvido <span class='by'>por <a href data-user-card='{{username_lower}}'>{{username}}</a></span> na <a href='{{post_path}}'>mensagem #{{post_number}}</a>"
-      accepted_notification: "<i title='accepted' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
+    expired:
+      allow_expired_deals: "Permitir que o criador do tópico e a equipe marquem uma resposta como a solução"
+      mark_deal_expired: "Esta resposta resolve o problema"
+      has_expired_deal: "Este tópico tem uma solução"
+      unmark_deal_expired: "Esta resposta não resolve mais o problema"
+      expired_deal: "Solução"
+      expired_deal: "Solução"
+      expired_marked_html: "<i class='fa-check-square fa expired_marked'></i> Resolvido <span class='by'>por <a href data-user-card='{{username_lower}}'>{{username}}</a></span> na <a href='{{post_path}}'>mensagem #{{post_number}}</a>"
+      expired_marked_notification: "<i title='expired_marked' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"

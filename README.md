@@ -1,3 +1,3 @@
-## Discourse Solved
+## Discourse Expired
 
-Provides a solved button on designated categories
+Provides a expired button on designated categories

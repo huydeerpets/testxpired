@@ -1,8 +1,8 @@
 es:
   site_settings:
-    allow_solved_on_all_topics: "Permitir a los usuarios aceptar respuestas como soluciones en todos los temas (por defecto, esto se configura para cada categoría editando cada una)"
+    allow_expired_on_all_topics: "Permitir a los usuarios aceptar respuestas como soluciones en todos los temas (por defecto, esto se configura para cada categoría editando cada una)"
   reports:
-    accepted_solutions:
+    expired_marked_deals:
       title: "Soluciones aceptadas"
       xaxis: "Día"
       yaxis: "Total"
