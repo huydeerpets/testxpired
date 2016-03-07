@@ -7,5 +7,5 @@ en:
       unset_expire: "Re-open this deal"
       expired_deal: "Expired"
       exp: "Expired"
-      set_expired_html: "<i class='fa-check-square fa set_expired'></i>"
+      set_expired_html: "<i class='fa-check-square fa set_expired'></i>Expired"
       set_expired_notification: "<i title='set_expired' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
