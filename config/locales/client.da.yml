@@ -6,6 +6,12 @@ da:
       has_expired_deal: "Dette svar har en løsning"
       unset_expire: "Dette svar løser ikke længere problemet"
       expired_deal: "Løsning"
+<<<<<<< HEAD
       exp: "Løsning"
       set_expired_html: "<i class='fa-check-square fa set_expired'></i> Løst <span class='by'>af <a href data-user-card='{{username_lower}}'>{{username}}</a></span> i <a href='{{post_path}}'>indlæg #{{post_number}}</a>"
       set_expired_notification: "<i title='set_expired' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
+=======
+      solution: "Løsning"
+      accepted_html: "<i class='fa-check-square fa accepted'></i> Løst <span class='by'>af <a href data-user-card='{{username_lower}}'>{{username}}</a></span> i <a href='{{post_path}}'>indlæg #{{post_number}}</a>"
+      accepted_notification: "<i title='accepted' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
+>>>>>>> parent of a1f944a... update

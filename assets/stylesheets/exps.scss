@@ -1,13 +1,21 @@
 <<<<<<< HEAD:assets/stylesheets/exps.scss
+<<<<<<< HEAD:assets/stylesheets/exps.scss
 .expired-panel, .post-controls .set_expired, .fa.set_expired, .set_expired-text {
   color: red;
 =======
 .expired-panel, .post-controls .set_expireded, .fa.set_expireded, .set_expireded-text {
+=======
+.expired-panel, .post-controls .accepted, .fa.accepted, .accepted-text {
+>>>>>>> parent of a1f944a... update:assets/stylesheets/solutions.scss
   color: green;
 >>>>>>> parent of 644f6f3... red:assets/stylesheets/solutions.scss
 }
 
+<<<<<<< HEAD:assets/stylesheets/exps.scss
 .post-controls .set_expired-text {
+=======
+.post-controls .accepted-text {
+>>>>>>> parent of a1f944a... update:assets/stylesheets/solutions.scss
   display: inline-block;
   font-size: inherit;
   vertical-align: middle;
@@ -16,12 +24,21 @@
   z-index: 999;
 }
 
+<<<<<<< HEAD:assets/stylesheets/exps.scss
 // you can style set_expired answers however your want
 .topic-post.set_expired-answer .topic-body {
 //  background-color: #E9FFE0;
 }
 
 .mobile-view .post-controls .set_expired-text {
+=======
+// you can style accepted answers however your want
+.topic-post.accepted-answer .topic-body {
+//  background-color: #E9FFE0;
+}
+
+.mobile-view .post-controls .accepted-text {
+>>>>>>> parent of a1f944a... update:assets/stylesheets/solutions.scss
   float: left;
 }
 

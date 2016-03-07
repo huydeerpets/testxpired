@@ -6,6 +6,12 @@ en:
       has_expired_deal: "This deal has expired"
       unset_expire: "Re-open this deal"
       expired_deal: "Expired"
+<<<<<<< HEAD
       exp: "Expired"
       set_expired_html: "<i class='fa-check-square fa set_expired'> Expired</i>"
       set_expired_notification: "<i title='set_expired' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
+=======
+      solution: "Expired"
+      accepted_html: "<i class='fa-check-square fa accepted'></i>"
+      accepted_notification: "<i title='accepted' class='fa fa-check-square'></i><p><span>{{username}}</span> {{description}}</p>"
+>>>>>>> parent of a1f944a... update

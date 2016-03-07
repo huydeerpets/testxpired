@@ -21,18 +21,28 @@ after_initialize do
   class DiscourseExpired::answerController < ::ApplicationController
 =======
   class DiscourseSolved::AnswerController < ::ApplicationController
+<<<<<<< HEAD
 >>>>>>> parent of 38b3099... update
     def set_expired
+=======
+    def accept
+>>>>>>> parent of a1f944a... update
 
-      limit_set_expireds
+      limit_accepts
 
       post = Post.find(params[:id].to_i)
 
       guardian.ensure_can_set_expire!(post.topic)
 
+<<<<<<< HEAD
       set_expired_id = post.topic.custom_fields["expired_deal_post_id"].to_i
       if set_expired_id > 0
         if p2 = Post.find_by(id: set_expired_id)
+=======
+      accepted_id = post.topic.custom_fields["expired_deal_post_id"].to_i
+      if accepted_id > 0
+        if p2 = Post.find_by(id: accepted_id)
+>>>>>>> parent of a1f944a... update
           p2.custom_fields["is_expired_deal"] = nil
           p2.save!
         end
@@ -50,7 +60,11 @@ after_initialize do
                            topic_id: post.topic_id,
                            post_number: post.post_number,
                            data: {
+<<<<<<< HEAD
                              message: 'expired.set_expired_notification',
+=======
+                             message: 'expired.accepted_notification',
+>>>>>>> parent of a1f944a... update
                              display_username: current_user.username,
                              topic_title: post.topic.title
                            }.to_json
@@ -60,9 +74,9 @@ after_initialize do
       render json: success_json
     end
 
-    def reopen
+    def unaccept
 
-      limit_set_expireds
+      limit_accepts
 
       post = Post.find(params[:id].to_i)
 
@@ -86,10 +100,10 @@ after_initialize do
       render json: success_json
     end
 
-    def limit_set_expireds
+    def limit_accepts
       unless current_user.staff?
-        RateLimiter.new(nil, "set_expired-hr-#{current_user.id}", 20, 1.hour).performed!
-        RateLimiter.new(nil, "set_expired-min-#{current_user.id}", 4, 30.seconds).performed!
+        RateLimiter.new(nil, "accept-hr-#{current_user.id}", 20, 1.hour).performed!
+        RateLimiter.new(nil, "accept-min-#{current_user.id}", 4, 30.seconds).performed!
       end
     end
   end
@@ -98,9 +112,14 @@ after_initialize do
   DiscourseExpired::Engine.routes.draw do
 =======
   DiscourseSolved::Engine.routes.draw do
+<<<<<<< HEAD
 >>>>>>> parent of 38b3099... update
     post "/set_expired" => "answer#set_expired"
     post "/reopen" => "answer#reopen"
+=======
+    post "/accept" => "answer#accept"
+    post "/unaccept" => "answer#unaccept"
+>>>>>>> parent of a1f944a... update
   end
 
   Discourse::Application.routes.append do
@@ -168,20 +187,34 @@ after_initialize do
   end
 
   class ::Category
+<<<<<<< HEAD
     after_save :reset_set_expired_cache
 
     protected
     def reset_set_expired_cache
+=======
+    after_save :reset_accepted_cache
+
+    protected
+    def reset_accepted_cache
+>>>>>>> parent of a1f944a... update
       ::Guardian.reset_expired_deal_cache
     end
   end
 
   class ::Guardian
 
+<<<<<<< HEAD
     @@allowed_set_expired_cache = DistributedCache.new("allowed_set_expired")
 
     def self.reset_expired_deal_cache
       @@allowed_set_expired_cache["allowed"] =
+=======
+    @@allowed_accepted_cache = DistributedCache.new("allowed_accepted")
+
+    def self.reset_expired_deal_cache
+      @@allowed_accepted_cache["allowed"] =
+>>>>>>> parent of a1f944a... update
         begin
           Set.new(
             CategoryCustomField
@@ -194,8 +227,13 @@ after_initialize do
     def allow_expired_mark_on_category?(category_id)
       return true if SiteSetting.allow_expired_on_all_topics
 
+<<<<<<< HEAD
       self.class.reset_expired_deal_cache unless @@allowed_set_expired_cache["allowed"]
       @@allowed_set_expired_cache["allowed"].include?(category_id)
+=======
+      self.class.reset_expired_deal_cache unless @@allowed_accepted_cache["allowed"]
+      @@allowed_accepted_cache["allowed"].include?(category_id)
+>>>>>>> parent of a1f944a... update
     end
 
     def can_set_expire?(topic)

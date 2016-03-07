@@ -18,7 +18,7 @@ function clearAccepted(topic) {
   });
 }
 
-function reopenPost(post) {
+function unacceptPost(post) {
   if (!post.get('can_unset_expire')) { return; }
   const topic = post.topic;
 
@@ -29,13 +29,17 @@ function reopenPost(post) {
   });
   topic.set('expired_deal', undefined);
 
+<<<<<<< HEAD
   Discourse.ajax("/exp/reopen", {
+=======
+  Discourse.ajax("/solution/unaccept", {
+>>>>>>> parent of a1f944a... update
     type: 'POST',
     data: { id: post.get('id') }
   }).catch(popupAjaxError);
 }
 
-function set_expiredPost(post) {
+function acceptPost(post) {
   const topic = post.topic;
 
   clearAccepted(topic);
@@ -51,7 +55,11 @@ function set_expiredPost(post) {
     post_number: post.get('post_number')
   });
 
+<<<<<<< HEAD
   Discourse.ajax("/exp/set_expired", {
+=======
+  Discourse.ajax("/solution/accept", {
+>>>>>>> parent of a1f944a... update
     type: 'POST',
     data: { id: post.get('.id') }
   }).catch(popupAjaxError);
@@ -60,23 +68,36 @@ function set_expiredPost(post) {
 // Code for older discourse installs for backwards compatibility
 function oldPluginCode() {
   PostView.reopen({
+<<<<<<< HEAD
     classNameBindings: ['post.expired_deal:set_expired-answer']
+=======
+    classNameBindings: ['post.expired_deal:accepted-answer']
+>>>>>>> parent of a1f944a... update
   });
 
   PostMenuComponent.registerButton(function(visibleButtons){
     var position = 0;
 
     var canAccept = this.get('post.can_set_expire');
+<<<<<<< HEAD
     var canUnset_expired = this.get('post.can_unset_expire');
     var set_expired = this.get('post.expired_deal');
     var isOp = Discourse.User.currentProp("id") === this.get('post.topic.user_id');
 
     if  (!set_expired && canAccept && !isOp) {
+=======
+    var canUnaccept = this.get('post.can_unset_expire');
+    var accepted = this.get('post.expired_deal');
+    var isOp = Discourse.User.currentProp("id") === this.get('post.topic.user_id');
+
+    if  (!accepted && canAccept && !isOp) {
+>>>>>>> parent of a1f944a... update
       // first hidden position
       if (this.get('collapsed')) { return; }
       position = visibleButtons.length - 2;
     }
     if (canAccept) {
+<<<<<<< HEAD
 <<<<<<< HEAD
       visibleButtons.splice(position,0,new Button('set_expiredanswer', 'expired.set_expire', 'check-square-o', {className: 'reopened'}));
 =======
@@ -94,12 +115,24 @@ function oldPluginCode() {
           locale,
           'check-square',
           {className: 'set_expired fade-out', prefixHTML: '<span class="set_expired-text">' + I18n.t('expired.exp') + '</span>'})
+=======
+      visibleButtons.splice(position,0,new Button('acceptAnswer', 'expired.set_expire', 'check-square-o', {className: 'unaccepted'}));
+    }
+    if (canUnaccept || accepted) {
+      var locale = canUnaccept ? 'expired.unset_expire' : 'expired.expired_deal';
+      visibleButtons.splice(position,0,new Button(
+          'unacceptAnswer',
+          locale,
+          'check-square',
+          {className: 'accepted fade-out', prefixHTML: '<span class="accepted-text">' + I18n.t('expired.solution') + '</span>'})
+>>>>>>> parent of a1f944a... update
         );
     }
 
   });
 
   PostMenuComponent.reopen({
+<<<<<<< HEAD
     set_expiredChanged: function() {
       this.rerender();
     }.observes('post.expired_deal'),
@@ -118,6 +151,18 @@ function oldPluginCode() {
     clickAcceptAnswer() {
 >>>>>>> parent of 38b3099... update
       set_expiredPost(this.get('post'));
+=======
+    acceptedChanged: function() {
+      this.rerender();
+    }.observes('post.expired_deal'),
+
+    clickUnacceptAnswer() {
+      unacceptPost(this.get('post'));
+    },
+
+    clickAcceptAnswer() {
+      acceptPost(this.get('post'));
+>>>>>>> parent of a1f944a... update
     }
   });
 }
@@ -129,6 +174,7 @@ function initializeWithApi(api) {
 
   api.addPostMenuButton('expired', attrs => {
     const canAccept = attrs.can_set_expire;
+<<<<<<< HEAD
     const canUnset_expired = attrs.can_unset_expire;
     const set_expired = attrs.expired_deal;
     const isOp = currentUser && currentUser.id === attrs.user_id;
@@ -141,11 +187,22 @@ function initializeWithApi(api) {
 =======
         action: 'set_expiredAnswer',
 >>>>>>> parent of 38b3099... update
+=======
+    const canUnaccept = attrs.can_unset_expire;
+    const accepted = attrs.expired_deal;
+    const isOp = currentUser && currentUser.id === attrs.user_id;
+    const position = (!accepted && canAccept && !isOp) ? 'second-last-hidden' : 'first';
+
+    if (canAccept) {
+      return {
+        action: 'acceptAnswer',
+>>>>>>> parent of a1f944a... update
         icon: 'check-square-o',
-        className: 'reopened',
+        className: 'unaccepted',
         title: 'expired.set_expire',
         position
       };
+<<<<<<< HEAD
     } else if (canUnset_expired || set_expired) {
       const title = canUnset_expired ? 'expired.unset_expire' : 'expired.expired_deal';
       return {
@@ -160,6 +217,18 @@ function initializeWithApi(api) {
         position,
         beforeButton(h) {
           return h('span.set_expired-text', I18n.t('expired.exp'));
+=======
+    } else if (canUnaccept || accepted) {
+      const title = canUnaccept ? 'expired.unset_expire' : 'expired.expired_deal';
+      return {
+        action: 'unacceptAnswer',
+        icon: 'check-square',
+        title,
+        className: 'accepted fade-out',
+        position,
+        beforeButton(h) {
+          return h('span.accepted-text', I18n.t('expired.solution'));
+>>>>>>> parent of a1f944a... update
         }
       };
     }
@@ -170,36 +239,48 @@ function initializeWithApi(api) {
       const topic = dec.getModel().get('topic');
       if (topic.get('expired_deal')) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         return dec.rawHtml(`<p class="expired">${topic.get('set_expiredanswerHtml')}</p>`);
 =======
         return dec.rawHtml(`<p class="expired">${topic.get('set_expiredAnswerHtml')}</p>`);
 >>>>>>> parent of 38b3099... update
+=======
+        return dec.rawHtml(`<p class="expired">${topic.get('acceptedAnswerHtml')}</p>`);
+>>>>>>> parent of a1f944a... update
       }
     }
   });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   api.attachWidgetAction('post', 'set_expiredanswer', function() {
 =======
   api.attachWidgetAction('post', 'set_expiredAnswer', function() {
 >>>>>>> parent of 38b3099... update
+=======
+  api.attachWidgetAction('post', 'acceptAnswer', function() {
+>>>>>>> parent of a1f944a... update
     const post = this.model;
     const current = post.get('topic.postStream.posts').filter(p => {
       return p.get('post_number') === 1 || p.get('expired_deal');
     });
-    set_expiredPost(post);
+    acceptPost(post);
 
     current.forEach(p => this.appEvents.trigger('post-stream:refresh', { id: p.id }));
   });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   api.attachWidgetAction('post', 'reopenanswer', function() {
 =======
   api.attachWidgetAction('post', 'reopenAnswer', function() {
 >>>>>>> parent of 38b3099... update
+=======
+  api.attachWidgetAction('post', 'unacceptAnswer', function() {
+>>>>>>> parent of a1f944a... update
     const post = this.model;
     const op = post.get('topic.postStream.posts').find(p => p.get('post_number') === 1);
-    reopenPost(post);
+    unacceptPost(post);
     this.appEvents.trigger('post-stream:refresh', { id: op.get('id') });
   });
 }
@@ -211,10 +292,14 @@ export default {
     Topic.reopen({
       // keeping this here cause there is complex localization
 <<<<<<< HEAD
+<<<<<<< HEAD
       set_expiredanswerHtml: function() {
 =======
       set_expiredAnswerHtml: function() {
 >>>>>>> parent of 38b3099... update
+=======
+      acceptedAnswerHtml: function() {
+>>>>>>> parent of a1f944a... update
         const username = this.get('expired_deal.username');
         const postNumber = this.get('expired_deal.post_number');
 
@@ -222,7 +307,11 @@ export default {
           return "";
         }
 
+<<<<<<< HEAD
         return I18n.t("expired.set_expired_html", {
+=======
+        return I18n.t("expired.accepted_html", {
+>>>>>>> parent of a1f944a... update
           username_lower: username.toLowerCase(),
           username,
           post_path: this.get('url') + "/" + postNumber,
