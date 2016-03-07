@@ -12,19 +12,19 @@ function clearAccepted(topic) {
   posts.forEach(post => {
     if (post.get('post_number') > 1 ) {
       post.set('accepted_answer',false);
-      post.set('can_accept_answer',true);
-      post.set('can_unaccept_answer',false);
+      post.set('can_set_expire',true);
+      post.set('can_unset_expire',false);
     }
   });
 }
 
 function unacceptPost(post) {
-  if (!post.get('can_unaccept_answer')) { return; }
+  if (!post.get('can_unset_expire')) { return; }
   const topic = post.topic;
 
   post.setProperties({
-    can_accept_answer: true,
-    can_unaccept_answer: false,
+    can_set_expire: true,
+    can_unset_expire: false,
     accepted_answer: false
   });
   topic.set('accepted_answer', undefined);
@@ -41,8 +41,8 @@ function acceptPost(post) {
   clearAccepted(topic);
 
   post.setProperties({
-    can_unaccept_answer: true,
-    can_accept_answer: false,
+    can_unset_expire: true,
+    can_set_expire: false,
     accepted_answer: true
   });
 
@@ -66,8 +66,8 @@ function oldPluginCode() {
   PostMenuComponent.registerButton(function(visibleButtons){
     var position = 0;
 
-    var canAccept = this.get('post.can_accept_answer');
-    var canUnaccept = this.get('post.can_unaccept_answer');
+    var canAccept = this.get('post.can_set_expire');
+    var canUnaccept = this.get('post.can_unset_expire');
     var accepted = this.get('post.accepted_answer');
     var isOp = Discourse.User.currentProp("id") === this.get('post.topic.user_id');
 
@@ -77,10 +77,10 @@ function oldPluginCode() {
       position = visibleButtons.length - 2;
     }
     if (canAccept) {
-      visibleButtons.splice(position,0,new Button('acceptAnswer', 'solved.accept_answer', 'check-square-o', {className: 'unaccepted'}));
+      visibleButtons.splice(position,0,new Button('acceptAnswer', 'solved.set_expire', 'check-square-o', {className: 'unaccepted'}));
     }
     if (canUnaccept || accepted) {
-      var locale = canUnaccept ? 'solved.unaccept_answer' : 'solved.accepted_answer';
+      var locale = canUnaccept ? 'solved.unset_expire' : 'solved.accepted_answer';
       visibleButtons.splice(position,0,new Button(
           'unacceptAnswer',
           locale,
@@ -109,11 +109,11 @@ function oldPluginCode() {
 function initializeWithApi(api) {
   const currentUser = api.getCurrentUser();
 
-  api.includePostAttributes('can_accept_answer', 'can_unaccept_answer', 'accepted_answer');
+  api.includePostAttributes('can_set_expire', 'can_unset_expire', 'accepted_answer');
 
   api.addPostMenuButton('solved', attrs => {
-    const canAccept = attrs.can_accept_answer;
-    const canUnaccept = attrs.can_unaccept_answer;
+    const canAccept = attrs.can_set_expire;
+    const canUnaccept = attrs.can_unset_expire;
     const accepted = attrs.accepted_answer;
     const isOp = currentUser && currentUser.id === attrs.user_id;
     const position = (!accepted && canAccept && !isOp) ? 'second-last-hidden' : 'first';
@@ -123,11 +123,11 @@ function initializeWithApi(api) {
         action: 'acceptAnswer',
         icon: 'check-square-o',
         className: 'unaccepted',
-        title: 'solved.accept_answer',
+        title: 'solved.set_expire',
         position
       };
     } else if (canUnaccept || accepted) {
-      const title = canUnaccept ? 'solved.unaccept_answer' : 'solved.accepted_answer';
+      const title = canUnaccept ? 'solved.unset_expire' : 'solved.accepted_answer';
       return {
         action: 'unacceptAnswer',
         icon: 'check-square',

@@ -24,7 +24,7 @@ after_initialize do
 
       post = Post.find(params[:id].to_i)
 
-      guardian.ensure_can_accept_answer!(post.topic)
+      guardian.ensure_can_set_expire!(post.topic)
 
       accepted_id = post.topic.custom_fields["accepted_answer_post_id"].to_i
       if accepted_id > 0
@@ -62,7 +62,7 @@ after_initialize do
 
       post = Post.find(params[:id].to_i)
 
-      guardian.ensure_can_accept_answer!(post.topic)
+      guardian.ensure_can_set_expire!(post.topic)
 
       post.custom_fields["is_accepted_answer"] = nil
       post.topic.custom_fields["accepted_answer_post_id"] = nil
@@ -190,7 +190,7 @@ after_initialize do
       @@allowed_accepted_cache["allowed"].include?(category_id)
     end
 
-    def can_accept_answer?(topic)
+    def can_set_expire?(topic)
       allow_expired_mark_on_category?(topic.category_id) && (
         is_staff? || (
           authenticated? && !topic.closed? && topic.user_id == current_user.id
@@ -201,22 +201,22 @@ after_initialize do
 
   require_dependency 'post_serializer'
   class ::PostSerializer
-    attributes :can_accept_answer, :can_unaccept_answer, :accepted_answer
+    attributes :can_set_expire, :can_unset_expire, :accepted_answer
 
-    def can_accept_answer
+    def can_set_expire
       topic = (topic_view && topic_view.topic) || object.topic
 
       if topic
-        return scope.can_accept_answer?(topic) && object.post_number > 1 && !accepted_answer
+        return scope.can_set_expire?(topic) && object.post_number > 1 && !accepted_answer
       end
 
       false
     end
 
-    def can_unaccept_answer
+    def can_unset_expire
       topic = (topic_view && topic_view.topic) || object.topic
       if topic
-        return scope.can_accept_answer?(topic) && (post_custom_fields["is_accepted_answer"] == 'true')
+        return scope.can_set_expire?(topic) && (post_custom_fields["is_accepted_answer"] == 'true')
       end
     end
 
